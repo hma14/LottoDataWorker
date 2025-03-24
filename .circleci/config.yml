@@ -3,7 +3,7 @@ version: 2.1
 executors:
   windows:
     machine:
-      image: windows-server-2019-cuda:current
+      image: windows-server-2019
 
 jobs:
   build:

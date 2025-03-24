@@ -28,7 +28,7 @@ jobs:
             - publish/
 
   deploy:
-    executor: windows-executor
+    executor: windows
     steps:
       - attach_workspace:
           at: .

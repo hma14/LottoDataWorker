@@ -18,7 +18,7 @@ jobs:
       - checkout
       - run:
           name: Install .NET SDK
-          command: choco install dotnet-sdk --version=9.0 -y --force --verbose
+          command: choco install dotnet-sdk --pre -y --force --verbose
       - run:
           name: Build the project
           command: dotnet build --configuration Release

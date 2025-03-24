@@ -1,8 +1,19 @@
 version: 2.1
 
+orbs:
+  win: circleci/windows@2.4.0 # ✅ Import the Windows orb
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+
 jobs:
   build:
-    executor: windows/default # ✅ Use CircleCI's Windows executor
+    executor: win/default # ✅ Use Windows Orb executor
     steps:
       - checkout
       - run:
@@ -20,7 +31,7 @@ jobs:
             - "*"
 
   deploy:
-    executor: windows/default # ✅ Use same Windows executor for deployment
+    executor: win/default # ✅ Use same Windows executor
     steps:
       - attach_workspace:
           at: C:\LottoDataWorker
@@ -35,12 +46,3 @@ jobs:
       - run:
           name: Start Service
           command: Start-Service -Name LottoDataService
-
-workflows:
-  version: 2
-  build-and-deploy:
-    jobs:
-      - build
-      - deploy:
-          requires:
-            - build

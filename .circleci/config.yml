@@ -1,56 +1,44 @@
 version: 2.1
 
-executors:
-  windows:
-    machine:
-      image: windows-server-2019
-
 jobs:
   build:
-    executor: windows
+    executor: windows/default # ✅ Use CircleCI's Windows executor
     steps:
-      - checkout # Clone your repo
-
+      - checkout
       - run:
           name: Install .NET SDK
-          command: |
-            choco install dotnet-sdk --version=9.0.0 -y
-
+          command: choco install dotnet-sdk --version=9.0 -y
       - run:
-          name: Build and Publish
-          command: |
-            dotnet build --configuration Release
-            dotnet publish --configuration Release --runtime win-x64 --self-contained false -o publish/
-
+          name: Build the project
+          command: dotnet build --configuration Release
+      - run:
+          name: Publish the project
+          command: dotnet publish --configuration Release --runtime win-x64 --self-contained false
       - persist_to_workspace:
-          root: .
+          root: bin\Release\net9.0\win-x64\publish
           paths:
-            - publish/
+            - "*"
 
   deploy:
-    executor: windows
+    executor: windows/default # ✅ Use same Windows executor for deployment
     steps:
       - attach_workspace:
-          at: .
-
+          at: C:\LottoDataWorker
       - run:
-          name: Stop Windows Service
+          name: Stop Service
           command: |
-            powershell Stop-Service -Name LottoDataService -Force -ErrorAction SilentlyContinue || echo "Service not running"
-
+            Stop-Service -Name LottoDataService -ErrorAction SilentlyContinue
       - run:
-          name: Deploy Application
+          name: Deploy to Service
           command: |
-            powershell Copy-Item -Path "publish/*" -Destination "D:\programs\LottoDataWorker\Deploy\LottoDataService" -Recurse -Force
-
+            Copy-Item -Path "C:\LottoDataWorker\*" -Destination "D:\programs\LottoDataWorker\Deploy\LottoDataService" -Recurse -Force
       - run:
-          name: Restart Windows Service
-          command: |
-            powershell Start-Service -Name LottoDataService
+          name: Start Service
+          command: Start-Service -Name LottoDataService
 
 workflows:
   version: 2
-  build-deploy:
+  build-and-deploy:
     jobs:
       - build
       - deploy:

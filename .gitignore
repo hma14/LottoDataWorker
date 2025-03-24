@@ -1,0 +1,103 @@
+﻿# Build artifacts
+/Program.cs
+
+/Deploy/LottoDataService/
+
+bin/
+obj/
+out/
+*.exe
+*.dll
+*.pdb
+*.log
+*.cache
+*.ilk
+*.ilk
+*.suo
+*.user
+*.unsaved
+*.sln.docstates
+*.VC.db
+*.vsp
+*.vspx
+*.vspscc
+*.vsdx
+
+# Visual Studio
+.vs/
+*.vssscc
+*.ncrunchproject
+*.suo
+*.user
+*.cache
+*.ldb
+*.pdb
+*.opendb
+*.VC.db
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+packages/
+!packages/repositories.config
+
+# .NET Core / ASP.NET Core
+project.lock.json
+project.assets.json
+global.json
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.json.user
+
+# Entity Framework
+Migrations/
+
+# Logs
+logs/
+*.log
+log*/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+*.sln.docstates
+
+# Publish artifacts
+publish/
+wwwroot/
+dist/
+node_modules/
+bower_components/
+.DS_Store
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# Coverage and Reports
+coverage/
+*.coverage
+TestResults/
+*.testresults
+*.trx
+*.ci/
+*.coveragexml
+.coverage/
+lcov-report/
+
+# Debugging
+launchSettings.json
+.vscode/
+
+# Python Virtual Environment (if applicable)
+venv/

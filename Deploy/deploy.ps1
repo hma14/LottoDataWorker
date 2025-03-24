@@ -27,7 +27,7 @@ Write-Host "Service stopped, proceeding with deployment..."
 
 
 Write-Host "Publishing the project..."
-$publishResult = dotnet publish "D:\programs\LottoDataWorker\LottoDataWorker.csproj" --configuration Release --runtime win-x64 --self-contained false
+$publishResult = dotnet publish "G:\LottoDataWorker\LottoDataWorker.csproj" --configuration Release --runtime win-x64 --self-contained false
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Publish failed. Stopping deployment."
     exit $LASTEXITCODE
@@ -37,7 +37,7 @@ Write-Host "Stopping the service if running..."
 Stop-Service -Name LottoDataService -Force -ErrorAction SilentlyContinue
 
 # Set the deployment destination
-$destinationPath = "D:\programs\LottoDataWorker\Deploy\LottoDataService"
+$destinationPath = "G:\LottoDataWorker\Deploy\LottoDataService"
 
 # Ensure the destination directory exists
 if (!(Test-Path $destinationPath)) {

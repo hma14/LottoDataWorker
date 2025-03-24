@@ -1,13 +1,13 @@
 version: 2.1
 
 executors:
-  windows-executor:
+  windows:
     machine:
-      image: windows-server-2019-vs2019:current
+      image: windows-server-2019-cuda:current
 
 jobs:
   build:
-    executor: windows-executor
+    executor: windows
     steps:
       - checkout # Clone your repo
 

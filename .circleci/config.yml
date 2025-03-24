@@ -1,0 +1,58 @@
+version: 2.1
+
+executors:
+  windows-executor:
+    machine:
+      image: windows-server-2022
+
+jobs:
+  build:
+    executor: windows-executor
+    steps:
+      - checkout # Clone your repo
+
+      - run:
+          name: Install .NET SDK
+          command: |
+            choco install dotnet-sdk --version=9.0.0 -y
+
+      - run:
+          name: Build and Publish
+          command: |
+            dotnet build --configuration Release
+            dotnet publish --configuration Release --runtime win-x64 --self-contained false -o publish/
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - publish/
+
+  deploy:
+    executor: windows-executor
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Stop Windows Service
+          command: |
+            powershell Stop-Service -Name LottoDataService -Force -ErrorAction SilentlyContinue || echo "Service not running"
+
+      - run:
+          name: Deploy Application
+          command: |
+            powershell Copy-Item -Path "publish/*" -Destination "D:\programs\LottoDataWorker\Deploy\LottoDataService" -Recurse -Force
+
+      - run:
+          name: Restart Windows Service
+          command: |
+            powershell Start-Service -Name LottoDataService
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build

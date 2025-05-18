@@ -83,6 +83,7 @@ namespace SeleniumLottoDataApp.Lib
             Driver.Quit();
         }
 
+#if false
 
         internal override void InsertLottTypeTable()
         {
@@ -100,15 +101,16 @@ namespace SeleniumLottoDataApp.Lib
             LottoType lottoType = new LottoType
             {
                 Id = Guid.NewGuid(),
-                LottoName = (int)LottoNames.LottoMax,
+                LottoName = lastLottoType.LottoName, //(int)LottoNames.LottoMax,
                 DrawNumber = lotto.DrawNumber,
                 DrawDate = lotto.DrawDate,
-                NumberRange = (int)LottoNumberRange.LottoMax,
+                NumberRange = lastLottoType.NumberRange, //(int)LottoNumberRange.LottoMax,
             };
             db.LottoTypes.Add(lottoType);
 
             //Store to Numbers table
             List<Number> numbers = new List<Number>();
+            //for (int i = 1; i <= (int)LottoNumberRange.LottoMax; i++)
             for (int i = 1; i <= (int)LottoNumberRange.LottoMax; i++)
             {
                 Number number = new Number
@@ -155,7 +157,7 @@ namespace SeleniumLottoDataApp.Lib
                                 lotto.Bonus == i) ? prevDraw[i - 1].TotalHits + 1 : prevDraw[i - 1].TotalHits,
 
                     // probability
-                    Probability = CalculateProbability(LottoNames.LottoMax, i).Result,
+                    Probability = CalculateProbability((LottoNames)lastLottoType.LottoName, i).Result,
                 };
 
                 numbers.Add(number);
@@ -164,5 +166,6 @@ namespace SeleniumLottoDataApp.Lib
             db.SaveChanges();
             
         }
+#endif
     }
 }

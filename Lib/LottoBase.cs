@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Chrome;
 using SeleniumLottoDataApp.BusinessModels;
 using SeleniumLottoDataApp.Dto;
+using SeleniumLottoDataApp.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -264,5 +265,88 @@ namespace SeleniumLottoDataApp.Lib
                     { "NOV","11" },
                     { "DEC","12" }
         };
+
+        public void InsertLottTypeTable(int lottoName)
+        {
+            var lotto = db.LottoMax.ToList().Last();
+            var lastLottoType = db.LottoTypes
+                .Where(x => x.LottoName == lottoName)
+                .OrderByDescending(d => d.DrawNumber).First();
+
+            if (lotto.DrawNumber == lastLottoType.DrawNumber) return;
+
+            var prevDraw = db.Numbers.Where(x => x.LottoTypeId == lastLottoType.Id)
+                                        .OrderBy(n => n.Value).ToArray();
+
+            // Store to LottoType table
+            LottoType lottoType = new ()
+            {
+                Id = Guid.NewGuid(),
+                LottoName = lastLottoType.LottoName, //(int)LottoNames.LottoMax,
+                DrawNumber = lotto.DrawNumber,
+                DrawDate = lotto.DrawDate,
+                NumberRange = lastLottoType.NumberRange, //(int)LottoNumberRange.LottoMax,
+            };
+            db.LottoTypes.Add(lottoType);
+
+            //Store to Numbers table
+            List<Number> numbers = [];
+            var numberRange = lastLottoType.NumberRange;
+            for (int i = 1; i <= numberRange; i++)
+            {
+                Number number = new ()
+                {
+                    Id = Guid.NewGuid(),
+                    Value = i,
+                    LottoTypeId = lottoType.Id,
+                    Distance = (lotto.Number1 != i &&
+                                lotto.Number2 != i &&
+                                lotto.Number3 != i &&
+                                lotto.Number4 != i &&
+                                lotto.Number5 != i &&
+                                lotto.Number6 != i &&
+                                (lottoName != (int)LottoNames.LottoMax || lotto.Number7 != i) &&
+                                lotto.Bonus != i) ? prevDraw[i - 1].Distance + 1 : 0,
+
+                    IsHit = (lotto.Number1 == i ||
+                                lotto.Number2 == i ||
+                                lotto.Number3 == i ||
+                                lotto.Number4 == i ||
+                                lotto.Number5 == i ||
+                                lotto.Number6 == i ||
+                                lotto.Number7 == i ||
+                                lotto.Bonus == i) ? true : false,
+
+                    NumberofDrawsWhenHit =
+                                (lotto.Number1 == i ||
+                                lotto.Number2 == i ||
+                                lotto.Number3 == i ||
+                                lotto.Number4 == i ||
+                                lotto.Number5 == i ||
+                                lotto.Number6 == i ||
+                                (lottoName != (int)LottoNames.LottoMax || lotto.Number7 != i) &&
+                                lotto.Bonus == i) ? prevDraw[i - 1].Distance + 1 : 0,
+
+                    IsBonusNumber = lotto.Bonus == i ? true : false,
+                    TotalHits = (lotto.Number1 == i ||
+                                lotto.Number2 == i ||
+                                lotto.Number3 == i ||
+                                lotto.Number4 == i ||
+                                lotto.Number5 == i ||
+                                lotto.Number6 == i ||
+                                (lottoName != (int)LottoNames.LottoMax || lotto.Number7 != i) &&
+                                lotto.Bonus == i) ? prevDraw[i - 1].TotalHits + 1 : prevDraw[i - 1].TotalHits,
+
+                    // probability
+                    Probability = CalculateProbability((LottoNames)lastLottoType.LottoName, i).Result,
+                };
+
+                numbers.Add(number);
+            }
+            db.Numbers.AddRange(numbers);
+            db.SaveChanges();
+
+        }
+
     }
 }

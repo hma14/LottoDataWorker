@@ -120,7 +120,7 @@ namespace SeleniumLottoDataApp.Lib
                                         .OrderBy(n => n.Value).ToArray();
 
             // Store to LottoType table
-            LottoType lottoType = new LottoType
+            LottoType lottoType = new ()
             {
                 Id = Guid.NewGuid(),
                 LottoName = (int)LottoNames.DailyGrand_GrandNumber,
@@ -131,7 +131,7 @@ namespace SeleniumLottoDataApp.Lib
 
 
             //Store to Numbers table
-            List<Number> numbers = new List<Number>();
+            List<Number> numbers = [];
             for (int i = 1; i <= (int)LottoNumberRange.DailyGrand_GrandNumber; i++)
             {
                 Number number = new Number

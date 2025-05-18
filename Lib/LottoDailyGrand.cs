@@ -105,7 +105,7 @@ namespace SeleniumLottoDataApp.Lib
             Driver.Quit();
         }
 
-
+#if false
         internal override void InsertLottTypeTable()
         {
             var lotto = db.DailyGrand.ToList().OrderByDescending(x => x.DrawNumber).First();
@@ -182,5 +182,6 @@ namespace SeleniumLottoDataApp.Lib
             }
             
         }
+#endif
     }
 }

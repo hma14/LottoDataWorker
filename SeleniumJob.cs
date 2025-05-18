@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SeleniumLottoDataApp.Lib;
 using SeleniumLottoDataApp;
+using static SeleniumLottoDataApp.BusinessModels.Constants;
 
 namespace LottoDataWorker
 {
@@ -33,23 +34,24 @@ namespace LottoDataWorker
                     // BC lotto
                     LottoBase obj = new LottoMAX(_context);
                     obj.InsertDb();
-                    obj.InsertLottTypeTable();
+                    obj.InsertLottTypeTable((int)LottoNames.LottoMax);
 
 
                     obj = new Lottery649(_context);
                     obj.InsertDb();
-                    obj.InsertLottTypeTable();
+                    obj.InsertLottTypeTable((int)LottoNames.Lotto649);
 
                     obj = new LottoBC49(_context);
                     obj.InsertDb();
-                    obj.InsertLottTypeTable();
+                    obj.InsertLottTypeTable((int)LottoNames.BC49);
 
                     obj = new LottoDailyGrand(_context);
                     obj.InsertDb();  
-                    obj.InsertLottTypeTable();
+                    obj.InsertLottTypeTable((int)LottoNames.DailyGrand);
 
                     obj = new LottoDailyGrand_GrandNumber(_context);
                     obj.InsertLottTypeTable();
+
 
                     obj.CloseDriver();
 

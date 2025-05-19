@@ -34,20 +34,20 @@ namespace LottoDataWorker
                     // BC lotto
                     LottoBase obj = new LottoMAX(_context);
                     obj.InsertDb();
-                    obj.InsertLottTypeTable((int)LottoNames.LottoMax);
+                    obj.InsertLottTypeTable();
 
 
                     obj = new Lottery649(_context);
                     obj.InsertDb();
-                    obj.InsertLottTypeTable((int)LottoNames.Lotto649);
+                    obj.InsertLottTypeTable();
 
                     obj = new LottoBC49(_context);
                     obj.InsertDb();
-                    obj.InsertLottTypeTable((int)LottoNames.BC49);
+                    obj.InsertLottTypeTable();
 
                     obj = new LottoDailyGrand(_context);
                     obj.InsertDb();  
-                    obj.InsertLottTypeTable((int)LottoNames.DailyGrand);
+                    obj.InsertLottTypeTable();
 
                     obj = new LottoDailyGrand_GrandNumber(_context);
                     obj.InsertLottTypeTable();

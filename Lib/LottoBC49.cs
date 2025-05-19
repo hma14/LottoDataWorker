@@ -85,8 +85,6 @@ namespace SeleniumLottoDataApp.Lib
             Driver.Quit();
         }
 
-
-#if false
         internal override void InsertLottTypeTable()
         {
             var lotto = db.BC49.ToList().Last();
@@ -170,6 +168,5 @@ namespace SeleniumLottoDataApp.Lib
             }
             
         }
-#endif
     }
 }

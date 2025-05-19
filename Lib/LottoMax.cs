@@ -83,7 +83,6 @@ namespace SeleniumLottoDataApp.Lib
             Driver.Quit();
         }
 
-#if false
 
         internal override void InsertLottTypeTable()
         {
@@ -166,6 +165,5 @@ namespace SeleniumLottoDataApp.Lib
             db.SaveChanges();
             
         }
-#endif
     }
 }

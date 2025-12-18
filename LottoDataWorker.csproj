@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="HangfireWorker.cs" />
     <Compile Remove="models\BritishLotto.cs" />
     <Compile Remove="models\CaSuperlottoPlu.cs" />
     <Compile Remove="models\CaSuperlottoPlus_Mega.cs" />
@@ -62,6 +63,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Deploy\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 </Project>

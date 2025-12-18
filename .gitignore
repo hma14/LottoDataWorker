@@ -1,6 +1,6 @@
 ﻿# Build artifacts
 
-/Deploy/LottoDataService/
+/Deploy/Deploy/
 
 bin/
 obj/

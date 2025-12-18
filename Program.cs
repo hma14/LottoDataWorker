@@ -53,10 +53,15 @@ builder.Services.AddHangfire(config =>
 builder.Services.AddHangfireServer();
 builder.WebHost.UseUrls("http://localhost:5000");
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5000);
+});
+
 var app = builder.Build();
 
 // Enable Hangfire Dashboard
-app.UseHangfireDashboard();
+app.UseHangfireDashboard("/hangfire");
 
 //app.MapHangfireDashboard();
 

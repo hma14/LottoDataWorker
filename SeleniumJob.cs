@@ -11,17 +11,10 @@ using static SeleniumLottoDataApp.BusinessModels.Constants;
 
 namespace LottoDataWorker
 {
-    internal class SeleniumJob
+    internal class SeleniumJob(LottoDbContext context, ILogger<SeleniumJob> logger) // Converted to primary constructor
     {
-        private readonly LottoDbContext _context;
-        private readonly ILogger<SeleniumJob> _logger;
-
-        public SeleniumJob(LottoDbContext context, ILogger<SeleniumJob> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
-
+        private readonly LottoDbContext _context = context;
+        private readonly ILogger<SeleniumJob> _logger = logger;
 
         public async Task RunSeleniumScraper()
         {
@@ -36,7 +29,6 @@ namespace LottoDataWorker
                     obj.InsertDb();
                     obj.InsertLottTypeTable();
 
-
                     obj = new Lottery649(_context);
                     obj.InsertDb();
                     obj.InsertLottTypeTable();
@@ -46,15 +38,13 @@ namespace LottoDataWorker
                     obj.InsertLottTypeTable();
 
                     obj = new LottoDailyGrand(_context);
-                    obj.InsertDb();  
+                    obj.InsertDb();
                     obj.InsertLottTypeTable();
 
                     obj = new LottoDailyGrand_GrandNumber(_context);
                     obj.InsertLottTypeTable();
 
-
                     obj.CloseDriver();
-
                 }
             }
             catch (Exception ex)

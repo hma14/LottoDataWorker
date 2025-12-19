@@ -79,7 +79,6 @@ app.Lifetime.ApplicationStarted.Register(() =>
         () => job.RunSeleniumScraper(),
         //"0 10 * * *", // Cron schedule for 10:00 AM daily
         Cron.Daily,  // Equivalent to "0 0 * * *"
-                        //"*/2 * * * *",
         new RecurringJobOptions { TimeZone = TimeZoneInfo.Local } // Use local timezone
     );
 });

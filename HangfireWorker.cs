@@ -26,7 +26,7 @@ public class HangfireWorker : BackgroundService
             var seleniumJob = scope.ServiceProvider.GetRequiredService<SeleniumJob>();
 
             // 🔥 Run the Selenium scraper immediately on startup
-            await seleniumJob.RunSeleniumScraper();
+            //await seleniumJob.RunSeleniumScraper();
         }
 
         // Schedule job to run every day at midnight

@@ -96,8 +96,7 @@ namespace SeleniumLottoDataApp.Lib
                     catch (Exception e)
                     {
                         var error = e.InnerException != null ? (e.InnerException.InnerException != null ? e.InnerException.InnerException.Message : e.InnerException.Message) : e.Message;
-                        Console.WriteLine(error);
-                        throw e;
+                        Console.WriteLine(error);                    
                     }
                 }
             }

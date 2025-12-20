@@ -30,12 +30,21 @@ builder.Logging.AddConsole();
 builder.Logging.SetMinimumLevel(LogLevel.Warning); // 👈 Reduce log output
 
 // Connection string for SQL Server
+#if true
 
-var dbPassword =
-    Environment.GetEnvironmentVariable("LOTTO_DB_PASSWORD")
-    ?? throw new InvalidOperationException("LOTTO_DB_PASSWORD is not set");
+    var baseConn = builder.Configuration.GetConnectionString("LottoDbContext");
+    var password = Environment.GetEnvironmentVariable("LOTTO_DB_PASSWORD");
 
-var connectionString = $"Server=webserver, 1433;Database=lottotrydb;User Id=sa;Password={dbPassword};MultipleActiveResultSets=True;TrustServerCertificate=True;Connection Timeout=30;";
+    if (string.IsNullOrWhiteSpace(password))
+    {
+        throw new InvalidOperationException("LOTTO_DB_PASSWORD is not set");
+    }
+    var connectionString = $"{baseConn};Password={password}";
+#else
+
+    var connectionString = builder.Configuration.GetConnectionString("LottoDbContext");
+
+#endif
 
 
 // Add DbContext

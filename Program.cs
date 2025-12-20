@@ -16,10 +16,6 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
     ContentRootPath = AppContext.BaseDirectory
 });
 
-// ✅ Add required services
-builder.Services.AddScoped<SeleniumJob>(); // Ensure that your job is registered
-builder.Services.AddLogging(); // Ensure logging is available
-
 
 // Run as Windows Service
 builder.Host.UseWindowsService(); // 👈 Important!
@@ -46,7 +42,7 @@ builder.Logging.SetMinimumLevel(LogLevel.Warning); // 👈 Reduce log output
 
 #endif
 
-
+// ✅ Add required services
 // Add DbContext
 builder.Services.AddDbContext<LottoDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -57,6 +53,12 @@ builder.Services.AddHangfire(config =>
           .UseSimpleAssemblyNameTypeSerializer()
           .UseRecommendedSerializerSettings()
           .UseSqlServerStorage(connectionString, new SqlServerStorageOptions()));
+
+
+builder.Services.AddScoped<SeleniumJob>(); // Ensure that your job is registered
+builder.Services.AddLogging(); // Ensure logging is available
+
+
 
 builder.Services.AddHangfireServer();
 builder.WebHost.UseUrls("http://localhost:5000");

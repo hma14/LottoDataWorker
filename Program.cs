@@ -17,7 +17,6 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 });
 
 // ✅ Add required services
-builder.Services.AddDbContext<LottoDbContext>();  // Make sure to configure this properly
 builder.Services.AddScoped<SeleniumJob>(); // Ensure that your job is registered
 builder.Services.AddLogging(); // Ensure logging is available
 
@@ -67,20 +66,14 @@ app.UseHangfireDashboard("/hangfire");
 
 app.Lifetime.ApplicationStarted.Register(() =>
 {
-
-    // ✅ Register Recurring Job inside the request pipeline
-    using var scope = app.Services.CreateScope();
-    
-    var job = scope.ServiceProvider.GetRequiredService<SeleniumJob>(); // Resolve SeleniumJob
-    var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
-
-    recurringJobManager.AddOrUpdate(
+    RecurringJob.AddOrUpdate<SeleniumJob>(
         "selenium-job", // Unique job ID
-        () => job.RunSeleniumScraper(),
-        //"0 10 * * *", // Cron schedule for 10:00 AM daily
+        job => job.RunSeleniumScraper(),
+                     //"0 10 * * *", // Cron schedule for 10:00 AM daily
         Cron.Daily,  // Equivalent to "0 0 * * *"
         new RecurringJobOptions { TimeZone = TimeZoneInfo.Local } // Use local timezone
     );
 });
 
 app.Run();
+

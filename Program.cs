@@ -35,7 +35,7 @@ builder.Logging.SetMinimumLevel(LogLevel.Warning); // 👈 Reduce log output
     {
         throw new InvalidOperationException("LOTTO_DB_PASSWORD is not set");
     }
-    var connectionString = $"{baseConn};Password={password}";
+    var connectionString = $"{baseConn} Password={password}";
 #else
 
     var connectionString = builder.Configuration.GetConnectionString("LottoDbContext");
